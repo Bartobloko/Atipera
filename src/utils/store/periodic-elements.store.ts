@@ -38,7 +38,7 @@ export const PeriodicElementsStore = signalStore(
           elements: ELEMENT_DATA,
           loading: false,
         });
-      }, 500);
+      }, 1200);
     },
 
     selectElement: (element: PeriodicElement) => {
