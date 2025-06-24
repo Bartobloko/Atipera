@@ -8,7 +8,6 @@
   border: 1px solid rgba(233, 30, 99, 0.4);
   backdrop-filter: blur(10px);
   width: 100%;
-  max-width: 100%;
   height: calc(100vh - 40px);
   display: flex;
   flex-direction: column;
@@ -27,7 +26,7 @@
 
 .header {
   flex-shrink: 0;
-  padding: 8px 24px;
+  padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,111 +45,127 @@
     text-shadow: 0 2px 4px rgba(233, 30, 99, 0.3);
   }
 
-  .search {
-    display: flex;
-    align-items: center;
-    flex: 0 0 280px;
-    min-width: 200px;
+  mat-form-field {
+    width: 300px; // Przywrócona normalna szerokość pola wyszukiwania
+    flex-shrink: 0;
 
-    mat-form-field {
-      width: 100%;
+    .mat-mdc-form-field-wrapper {
+      padding-bottom: 0;
+    }
 
-      .mat-mdc-form-field-wrapper {
-        padding-bottom: 0;
+    .mat-mdc-text-field-wrapper {
+      background: rgba(40, 40, 40, 0.8);
+      border-radius: 12px;
+      border: 2px solid rgba(233, 30, 99, 0.5);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(50, 50, 50, 0.9);
+        border-color: rgba(233, 30, 99, 0.8);
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
       }
 
-      .mat-mdc-text-field-wrapper {
-        background: rgba(40, 40, 40, 0.8);
-        border-radius: 12px;
-        border: 2px solid rgba(233, 30, 99, 0.5);
-        transition: all 0.3s ease;
-
-        &:hover {
-          background: rgba(50, 50, 50, 0.9);
-          border-color: rgba(233, 30, 99, 0.8);
-          box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
-        }
-
-        &.mdc-text-field--focused {
-          border-color: #e91e63;
-          background: rgba(50, 50, 50, 0.9);
-          box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
-        }
+      &.mdc-text-field--focused {
+        border-color: #e91e63;
+        background: rgba(50, 50, 50, 0.9);
+        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
       }
+    }
 
-      input {
-        padding: 0;
-        font-size: 14px;
-        color: #ffffff !important;
-      }
+    input {
+      padding: 0;
+      font-size: 14px;
+      color: #ffffff !important;
+    }
 
-      mat-icon {
-        color: #e91e63;
-        font-size: 20px;
-      }
+    mat-icon {
+      color: #e91e63;
+      font-size: 20px;
+    }
 
-      .mat-mdc-form-field-label {
-        color: rgba(255, 255, 255, 0.7) !important;
-      }
+    .mat-mdc-form-field-label {
+      color: rgba(255, 255, 255, 0.7) !important;
     }
   }
 }
 
 .table-wrapper {
   overflow-x: auto;
-  width: 100%;
   overflow-y: auto;
+  width: 100%;
   flex: 1;
-  max-height: calc(100vh - 140px);
+  max-height: calc(100vh - 120px); // Zmniejszona wysokość
 
-  // Custom scrollbar
+  // Cieńszy scrollbar
   &::-webkit-scrollbar {
-    height: 8px;
+    width: 6px; // Zmniejszona szerokość scrollbara pionowego
+    height: 6px; // Zmniejszona wysokość scrollbara poziomego
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(40, 40, 40, 0.5);
+    background: rgba(40, 40, 40, 0.3);
+    border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #e91e63;
-    border-radius: 4px;
+    background: rgba(233, 30, 99, 0.7);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(233, 30, 99, 0.9);
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: rgba(40, 40, 40, 0.3);
   }
 
   table {
     width: 100%;
-    min-width: 600px; // Minimum width to prevent crushing
     background: transparent;
     border-collapse: separate;
     border-spacing: 0;
+    table-layout: fixed; // Dodane dla lepszej kontroli szerokości kolumn
 
     th {
-
       background: rgba(156, 39, 176, 0.2);
       font-weight: 600;
       font-size: 14px;
       color: #ffffff;
-      padding: 18px 16px;
+      padding: 16px 12px;
       position: sticky;
       top: 0;
       z-index: 10;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &:first-child {
-        width: 80px;
+        width: 80px; // Position
         text-align: center;
-        border-top-left-radius: 0;
+      }
+
+      &:nth-child(2) {
+        width: 35%; // Name - elastyczna
+      }
+
+      &:nth-child(3) {
+        width: 20%; // Weight
+      }
+
+      &:nth-child(4) {
+        width: 20%; // Symbol
+        text-align: center;
       }
 
       &:last-child {
-        width: 100px;
+        width: 15%; // Actions
         text-align: center;
-        border-top-right-radius: 0;
       }
     }
 
     td {
-      padding: 16px;
+      padding: 14px 12px;
       font-size: 14px;
       border-bottom: 1px solid rgba(233, 30, 99, 0.2);
       color: #ffffff;
@@ -166,9 +181,12 @@
         font-size: 16px;
       }
 
+      &:nth-child(4) {
+        text-align: center;
+      }
+
       &:last-child {
         text-align: center;
-        width: 100px;
       }
     }
 
@@ -201,14 +219,24 @@
 
     button[mat-icon-button] {
       color: #e91e63;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
       border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &:hover {
         color: #ffffff;
         background: linear-gradient(135deg, #e91e63, #9c27b0);
         transform: scale(1.15) rotate(5deg);
-        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4);
+        box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+      }
+
+      &:active {
+        transform: scale(1.05) rotate(2deg);
+        transition: all 0.1s ease;
       }
 
       mat-icon {
@@ -244,14 +272,14 @@
   }
 
   .header {
-    padding: 20px;
+    padding: 18px 20px;
 
     h1 {
-      font-size: 24px;
+      font-size: 26px;
     }
 
-    .search {
-      flex: 0 0 250px;
+    mat-form-field {
+      width: 280px;
     }
   }
 }
@@ -265,104 +293,121 @@
   .header {
     flex-direction: column;
     align-items: stretch;
-    gap: 20px;
-    padding: 20px 16px;
+    gap: 16px;
+    padding: 16px;
 
     h1 {
-      font-size: 22px;
+      font-size: 20px;
       text-align: center;
     }
 
-    .search {
-      flex: 1;
-      min-width: auto;
+    mat-form-field {
+      width: 100%;
 
-      mat-form-field input {
-        padding: 12px 0;
+      input {
+        padding: 10px 0;
       }
     }
   }
 
   .table-wrapper {
+    // Scrollbar na mobilnych pozostaje jak jest
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
     table {
-      min-width: 500px; // Reduced minimum width for mobile
+      table-layout: auto; // Powrót do auto na mobilnych
 
       th, td {
-        padding: 12px 8px;
-        font-size: 13px;
-
-        &:first-child {
-          width: 60px;
-          padding: 12px 4px;
-        }
-
-        &:last-child {
-          width: 80px;
-          padding: 12px 4px;
-        }
-      }
-
-      th {
-        padding: 14px 8px;
+        padding: 10px 6px;
         font-size: 12px;
       }
 
-      .symbol {
-        padding: 4px 8px;
+      th {
+        padding: 12px 6px;
         font-size: 11px;
+
+        &:first-child {
+          width: 50px;
+        }
+
+        &:last-child {
+          width: 60px;
+        }
+      }
+
+      .symbol {
+        padding: 3px 6px;
+        font-size: 10px;
         min-width: 24px;
       }
 
-      button[mat-icon-button] mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
+      button[mat-icon-button] {
+        width: 28px;
+        height: 28px;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
       }
     }
   }
 
   .no-results {
-    padding: 40px 16px;
+    padding: 32px 16px;
     font-size: 14px;
 
     &::before {
-      font-size: 36px;
-      margin-bottom: 12px;
+      font-size: 32px;
+      margin-bottom: 10px;
     }
   }
 }
 
 @media (max-width: 480px) {
   .header {
-    padding: 16px 12px;
+    padding: 12px;
 
     h1 {
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 
   .table-wrapper table {
-    min-width: 450px;
-
     th, td {
-      padding: 10px 6px;
-      font-size: 12px;
+      padding: 8px 4px;
+      font-size: 11px;
 
       &:first-child {
-        width: 50px;
-        padding: 10px 2px;
+        width: 40px;
+        padding: 8px 2px;
       }
 
       &:last-child {
-        width: 70px;
-        padding: 10px 2px;
+        width: 50px;
+        padding: 8px 2px;
       }
     }
 
     .symbol {
-      padding: 3px 6px;
-      font-size: 10px;
+      padding: 2px 4px;
+      font-size: 9px;
       min-width: 20px;
+    }
+
+    button[mat-icon-button] {
+      width: 24px;
+      height: 24px;
+
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+      }
     }
   }
 }

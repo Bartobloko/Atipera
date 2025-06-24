@@ -3,8 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 24px;
-  border-bottom: 2px solid rgba(233, 30, 99, 0.4);
-  background: linear-gradient(135deg, rgba(156, 39, 176, 0.9), rgba(233, 30, 99, 0.8));
+  background: rgba(156, 39, 176, 0.2);
 
   h2 {
     margin: 0;
@@ -30,7 +29,7 @@
   padding: 32px 24px;
   min-width: 400px;
   max-width: 500px;
-  background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(40, 40, 40, 0.9));
+  background: rgba(96, 25, 108, 0.2);
   backdrop-filter: blur(10px);
 }
 
@@ -108,8 +107,7 @@
 
 mat-dialog-actions {
   padding: 20px 24px;
-  border-top: 2px solid rgba(233, 30, 99, 0.3);
-  background: linear-gradient(135deg, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, 0.95));
+  background: rgba(156, 39, 176, 0.2);
   display: flex;
   justify-content: flex-end;
   gap: 16px;
