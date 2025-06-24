@@ -6,15 +6,8 @@ html, body {
 }
 
 body {
-  background-color: #fafafa;
-  color: #212121;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #121212;
-    color: #ffffff;
-  }
+  background-color: #121212;
+  color: #ffffff;
 }
 
 ::-webkit-scrollbar {
@@ -23,29 +16,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #2e2e2e;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
+  background: #555;
 
   &:hover {
-    background: #a8a8a8;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-track {
-    background: #2e2e2e;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #555;
-
-    &:hover {
-      background: #777;
-    }
+    background: #777;
   }
 }
 
@@ -59,17 +37,3 @@ body {
   background: rgba(var(--mdc-theme-primary-rgb), 0.2);
 }
 
-@media (prefers-contrast: more) {
-  * {
-    border-color: currentColor !important;
-  }
-}
-
-// Reduced motion support
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}

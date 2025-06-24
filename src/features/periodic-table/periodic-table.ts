@@ -1,7 +1,6 @@
 import { Component, OnInit, inject, OnDestroy, effect, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +20,6 @@ import { EditElementDialog } from '../edit-element-dialog/edit-element-dialog';
     CommonModule,
     ReactiveFormsModule,
     MatTableModule,
-    MatProgressSpinnerModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
@@ -102,7 +100,6 @@ export class PeriodicTable implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.isValidUpdateResult(result)) {
-        // Używamy metody updateElement z oryginalną pozycją
         this.store.updateElement(result.element, result.originalPosition);
         this.snackBar.open(
           `${result.element.name} updated successfully`,

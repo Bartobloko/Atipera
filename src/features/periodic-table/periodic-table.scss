@@ -1,22 +1,11 @@
 .table-container {
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   width: 100%;
   max-height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
-
-  @media (prefers-color-scheme: dark) {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-}
-
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 80px 20px;
 }
 
 .header {
@@ -137,11 +126,6 @@
       }
     }
 
-    .symbol {
-      padding: 3px 6px;
-      font-size: 11px;
-      min-width: 20px;
-    }
   }
 
   .no-results {
@@ -172,12 +156,6 @@
       }
     }
 
-    .symbol {
-      padding: 2px 4px;
-      font-size: 10px;
-      min-width: 18px;
-    }
-
     button[mat-icon-button] {
       width: 32px;
       height: 32px;
@@ -194,16 +172,11 @@
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 4px;
   height: 16px;
-
-  @media (prefers-color-scheme: dark) {
-    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
-    background-size: 200% 100%;
-  }
 }
 
 @keyframes shimmer {
@@ -247,19 +220,11 @@
 }
 
 .skeleton-table-header {
-  border-bottom: 1px solid #e0e0e0;
-
-  @media (prefers-color-scheme: dark) {
-    border-bottom-color: #424242;
-  }
+  border-bottom: 1px solid #424242;
 }
 
 .skeleton-table-row {
-  border-bottom: 1px solid #f5f5f5;
-
-  @media (prefers-color-scheme: dark) {
-    border-bottom-color: #333;
-  }
+  border-bottom: 1px solid #333;
 }
 
 .skeleton-cell-xs { width: 40px; }

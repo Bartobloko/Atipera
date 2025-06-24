@@ -1,4 +1,3 @@
-// src/app/utils/periodic-elements.store.ts
 import { computed } from '@angular/core';
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
 import { PeriodicElement } from '../models/periodic-element';
@@ -23,7 +22,6 @@ export const PeriodicElementsStore = signalStore(
     elementsCount: computed(() => store.elements().length),
     hasElements: computed(() => store.elements().length > 0),
     selectedElementName: computed(() => store.selectedElement()?.name || null),
-    // Sortowanie elementów po pozycji
     sortedElements: computed(() =>
       [...store.elements()].sort((a, b) => a.position - b.position)
     ),
@@ -32,7 +30,6 @@ export const PeriodicElementsStore = signalStore(
     loadElements: () => {
       patchState(store, { loading: true });
 
-      // Symulacja ładowania danych (np. z API)
       setTimeout(() => {
         patchState(store, {
           elements: ELEMENT_DATA,
@@ -68,8 +65,12 @@ export const PeriodicElementsStore = signalStore(
       });
     },
 
-    // Poprawiona metoda updateElement - używa oryginalnej pozycji do znalezienia elementu
     updateElement: (updatedElement: PeriodicElement, originalPosition: number) => {
+      if (!updatedElement) {
+        console.warn('Invalid update parameters');
+        return;
+      }
+
       patchState(store, {
         elements: store.elements().map(el =>
           el.position === originalPosition ? updatedElement : el
@@ -80,7 +81,6 @@ export const PeriodicElementsStore = signalStore(
       });
     },
 
-    // Sprawdzenie czy pozycja już istnieje (z wyłączeniem aktualnie edytowanego elementu)
     isPositionTaken: (position: number, excludeOriginalPosition?: number) => {
       return store.elements().some(el =>
         el.position === position && el.position !== excludeOriginalPosition

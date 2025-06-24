@@ -4,10 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { PeriodicElement } from '../../utils/models/periodic-element';
 import { PeriodicElementsStore } from '../../utils/store/periodic-elements.store';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-edit-element-dialog',
@@ -19,7 +19,7 @@ import { PeriodicElementsStore } from '../../utils/store/periodic-elements.store
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIcon,
   ],
   templateUrl: './edit-element-dialog.html',
   styleUrls: ['./edit-element-dialog.scss'],
@@ -48,8 +48,6 @@ export class EditElementDialog implements OnInit {
       symbol: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]]
     });
   }
-
-  // Walidator sprawdzający czy pozycja już istnieje
   positionValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
 
@@ -80,7 +78,6 @@ export class EditElementDialog implements OnInit {
         symbol: formValue.symbol.trim()
       };
 
-      // Przekazujemy zarówno zaktualizowany element jak i oryginalną pozycję
       this.dialogRef.close({
         element: updatedElement,
         originalPosition: this.originalPosition
