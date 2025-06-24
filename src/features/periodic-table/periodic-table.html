@@ -1,13 +1,4 @@
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>Periodic Table of Elements</mat-card-title>
-    <mat-card-subtitle>
-      @if (elementsCount() > 0) {
-        Total elements: {{ elementsCount() }}
-      }
-    </mat-card-subtitle>
-  </mat-card-header>
-
   <mat-card-content>
     @if (loading()) {
       <div>
@@ -15,8 +6,33 @@
         <p>Loading periodic elements...</p>
       </div>
     } @else {
-      <div >
-        <table mat-table [dataSource]="elements()">
+      <!-- Search Filter -->
+      <div class="search-container">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search elements (name, symbol, position, weight)</mat-label>
+          <input matInput
+                 [formControl]="searchControl"
+                 placeholder="Type to search..."
+                 autocomplete="off">
+          <mat-icon matPrefix>search</mat-icon>
+          @if (searchControl.value) {
+            <button matSuffix
+                    mat-icon-button
+                    (click)="clearSearch()"
+                    matTooltip="Clear search">
+              <mat-icon>clear</mat-icon>
+            </button>
+          }
+        </mat-form-field>
+
+        @if (searchControl.value && filteredElements().length === 0) {
+          <p class="no-results">No elements found matching "{{ searchControl.value }}"</p>
+        }
+      </div>
+
+      <!-- Table -->
+      <div>
+        <table mat-table [dataSource]="filteredElements()">
 
           <!-- Number Column -->
           <ng-container matColumnDef="position">
@@ -58,7 +74,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"
               (click)="onRowClick(row)"
-              ></tr>
+              class="table-row"></tr>
         </table>
       </div>
     }
