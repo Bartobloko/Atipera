@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CommonModule } from '@angular/common';
+
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PeriodicElementsStore } from '../../utils/store/periodic-elements.store';
 import { PeriodicElement } from '../../utils/models/periodic-element';
@@ -17,14 +17,13 @@ import { EditElementDialog } from '../edit-element-dialog/edit-element-dialog';
   selector: 'app-periodic-table',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule
-  ],
+],
   templateUrl: './periodic-table.html',
   styleUrl: './periodic-table.scss'
 })

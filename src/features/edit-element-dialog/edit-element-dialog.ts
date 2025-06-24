@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+
 import { PeriodicElement } from '../../utils/models/periodic-element';
 import { PeriodicElementsStore } from '../../utils/store/periodic-elements.store';
 import {MatIcon} from '@angular/material/icon';
@@ -13,27 +13,28 @@ import {MatIcon} from '@angular/material/icon';
   selector: 'app-edit-element-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIcon,
-  ],
+    MatIcon
+],
   templateUrl: './edit-element-dialog.html',
   styleUrls: ['./edit-element-dialog.scss'],
 })
 export class EditElementDialog implements OnInit {
+  private fb = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<EditElementDialog>>(MatDialogRef);
+  data = inject<{
+    element: PeriodicElement;
+}>(MAT_DIALOG_DATA);
+
   editForm: FormGroup;
   private readonly store = inject(PeriodicElementsStore);
   private originalPosition: number;
 
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<EditElementDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { element: PeriodicElement }
-  ) {
+  constructor() {
     this.originalPosition = this.data.element.position;
 
     this.editForm = this.fb.group({
