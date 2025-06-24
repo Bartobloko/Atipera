@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, Inject, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { PeriodicElement } from '../../utils/models/periodic-element';
+import { PeriodicElementsStore } from '../../utils/store/periodic-elements.store';
 
 @Component({
   selector: 'app-edit-element-dialog',
@@ -25,18 +26,37 @@ import { PeriodicElement } from '../../utils/models/periodic-element';
 })
 export class EditElementDialog implements OnInit {
   editForm: FormGroup;
+  private readonly store = inject(PeriodicElementsStore);
+  private originalPosition: number;
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditElementDialog>,
     @Inject(MAT_DIALOG_DATA) public data: { element: PeriodicElement }
   ) {
+    this.originalPosition = this.data.element.position;
+
     this.editForm = this.fb.group({
-      position: [0, [Validators.required, Validators.min(1), Validators.max(999)]],
+      position: [0, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(999),
+        this.positionValidator.bind(this)
+      ]],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       weight: [0, [Validators.required, Validators.min(0.0001)]],
       symbol: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(3)]]
     });
+  }
+
+  // Walidator sprawdzający czy pozycja już istnieje
+  positionValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+
+    const position = Number(control.value);
+    const isPositionTaken = this.store.isPositionTaken(position, this.originalPosition);
+
+    return isPositionTaken ? { positionTaken: true } : null;
   }
 
   ngOnInit(): void {
@@ -59,7 +79,12 @@ export class EditElementDialog implements OnInit {
         weight: Number(formValue.weight),
         symbol: formValue.symbol.trim()
       };
-      this.dialogRef.close(updatedElement);
+
+      // Przekazujemy zarówno zaktualizowany element jak i oryginalną pozycję
+      this.dialogRef.close({
+        element: updatedElement,
+        originalPosition: this.originalPosition
+      });
     } else {
       this.markAllFieldsAsTouched();
     }
@@ -91,6 +116,9 @@ export class EditElementDialog implements OnInit {
     }
     if (field?.hasError('maxlength')) {
       return `${this.getFieldLabel(fieldName)} must be no more than ${field.errors?.['maxlength'].requiredLength} characters`;
+    }
+    if (field?.hasError('positionTaken')) {
+      return `Position ${field.value} is already taken by another element`;
     }
     return '';
   }

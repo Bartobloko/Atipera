@@ -23,6 +23,10 @@ export const PeriodicElementsStore = signalStore(
     elementsCount: computed(() => store.elements().length),
     hasElements: computed(() => store.elements().length > 0),
     selectedElementName: computed(() => store.selectedElement()?.name || null),
+    // Sortowanie elementów po pozycji
+    sortedElements: computed(() =>
+      [...store.elements()].sort((a, b) => a.position - b.position)
+    ),
   })),
   withMethods((store) => ({
     loadElements: () => {
@@ -64,24 +68,32 @@ export const PeriodicElementsStore = signalStore(
       });
     },
 
-    updateElement: (updatedElement: PeriodicElement) => {
+    // Poprawiona metoda updateElement - używa oryginalnej pozycji do znalezienia elementu
+    updateElement: (updatedElement: PeriodicElement, originalPosition: number) => {
       patchState(store, {
         elements: store.elements().map(el =>
-          el.position === updatedElement.position ? updatedElement : el
+          el.position === originalPosition ? updatedElement : el
         ),
-        selectedElement: store.selectedElement()?.position === updatedElement.position
+        selectedElement: store.selectedElement()?.position === originalPosition
           ? updatedElement
           : store.selectedElement(),
       });
     },
 
+    // Sprawdzenie czy pozycja już istnieje (z wyłączeniem aktualnie edytowanego elementu)
+    isPositionTaken: (position: number, excludeOriginalPosition?: number) => {
+      return store.elements().some(el =>
+        el.position === position && el.position !== excludeOriginalPosition
+      );
+    },
+
     searchElements: (searchTerm: string) => {
       if (!searchTerm.trim()) {
-        return store.elements();
+        return store.sortedElements();
       }
 
       const term = searchTerm.toLowerCase();
-      return store.elements().filter(element =>
+      return store.sortedElements().filter(element =>
         element.name.toLowerCase().includes(term) ||
         element.symbol.toLowerCase().includes(term) ||
         element.position.toString().includes(term)

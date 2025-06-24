@@ -36,7 +36,7 @@ export class PeriodicTable implements OnInit, OnDestroy {
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroy$ = new Subject<void>();
 
-  readonly allElements = this.store.elements;
+  readonly allElements = this.store.sortedElements; // Używamy sortedElements zamiast elements
   readonly loading = this.store.loading;
 
   searchControl = new FormControl('');
@@ -101,10 +101,11 @@ export class PeriodicTable implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result && this.isValidElement(result)) {
-        this.store.updateElement(result);
+      if (result && this.isValidUpdateResult(result)) {
+        // Używamy metody updateElement z oryginalną pozycją
+        this.store.updateElement(result.element, result.originalPosition);
         this.snackBar.open(
-          `${result.name} updated successfully`,
+          `${result.element.name} updated successfully`,
           'Close',
           {
             duration: 3000,
@@ -113,6 +114,13 @@ export class PeriodicTable implements OnInit, OnDestroy {
         );
       }
     });
+  }
+
+  private isValidUpdateResult(result: any): boolean {
+    return result &&
+      result.element &&
+      typeof result.originalPosition === 'number' &&
+      this.isValidElement(result.element);
   }
 
   private isValidElement(element: any): element is PeriodicElement {
