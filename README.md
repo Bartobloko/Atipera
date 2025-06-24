@@ -24,7 +24,7 @@ Aplikacja będzie dostępna pod adresem `http://localhost:4200`
 - Angular 20 (standalone components)
 - @ngrx/signals (SignalStore)
 - Angular Material
-- TypeScript (strict mode)
+- TypeScript
 - SCSS
 
 ## Struktura projektu
