@@ -1,11 +1,10 @@
-<div class="dialog-header">
-  <h2 mat-dialog-title>Edit Element</h2>
-  <button mat-icon-button mat-dialog-close>
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
-
 <mat-dialog-content class="dialog-content">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>Edit Element</h2>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
   <form [formGroup]="editForm" class="form">
     <div class="form-row">
       <mat-form-field>
@@ -41,11 +40,11 @@
       }
     </mat-form-field>
   </form>
+  <mat-dialog-actions>
+    <button matButton="elevated" (click)="onCancel()">Cancel</button>
+    <button matButton="filled" (click)="onSave()" [disabled]="editForm.invalid">
+      Save
+    </button>
+  </mat-dialog-actions>
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="editForm.invalid">
-    Save
-  </button>
-</mat-dialog-actions>

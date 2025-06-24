@@ -1,36 +1,37 @@
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 24px;
-  background: rgba(156, 39, 176, 0.2);
-
-  h2 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 600;
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+::ng-deep {
+  .cdk-overlay-backdrop {
+    background: rgba(0, 0, 0, 0.6);
   }
 
-  button {
-    color: #ffffff;
-    transition: all 0.3s ease;
-
-    &:hover {
-      color: #ffcdd2;
-      background: rgba(255, 255, 255, 0.1);
-      transform: scale(1.1);
+  .mat-mdc-dialog-container {
+    .mdc-dialog__surface {
+      border-radius: 8px;
+      border: 1px solid rgba(156, 39, 176, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
   }
 }
 
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #9c27b0, #e91e63);
+  margin: -24px -24px 24px -24px;
+
+}
+
 .dialog-content {
-  padding: 32px 24px;
+  padding: 24px;
   min-width: 400px;
   max-width: 500px;
-  background: rgba(96, 25, 108, 0.2);
-  backdrop-filter: blur(10px);
+
+  @media (max-width: 600px) {
+    min-width: 320px;
+    max-width: 90vw;
+    padding: 20px;
+  }
 }
 
 .form {
@@ -42,141 +43,26 @@
     display: flex;
     gap: 16px;
 
+    @media (max-width: 600px) {
+      flex-direction: column;
+      gap: 12px;
+    }
+
     mat-form-field {
       flex: 1;
-    }
-  }
-
-  mat-form-field {
-    width: 100%;
-
-    .mat-mdc-form-field-wrapper {
-      .mat-mdc-text-field-wrapper {
-        background: rgba(50, 50, 50, 0.8) !important;
-        border: 2px solid rgba(233, 30, 99, 0.5);
-        border-radius: 12px;
-        transition: all 0.3s ease;
-
-        &:hover {
-          border-color: rgba(233, 30, 99, 0.8);
-          background: rgba(60, 60, 60, 0.9) !important;
-          box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
-        }
-
-        &.mdc-text-field--focused {
-          border-color: #e91e63 !important;
-          background: rgba(60, 60, 60, 0.9) !important;
-          box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
-        }
-      }
-    }
-
-    input {
-      color: #ffffff !important;
-      font-size: 15px;
-      padding: 14px 16px;
-
-      &::placeholder {
-        color: rgba(255, 255, 255, 0.5) !important;
-      }
-    }
-
-    .mat-mdc-form-field-label {
-      color: rgba(255, 255, 255, 0.8) !important;
-      font-weight: 500;
-    }
-
-    .mat-mdc-form-field-label.mdc-floating-label--float-above {
-      color: #e91e63 !important;
-    }
-
-    .mat-mdc-form-field-error {
-      color: #ff5252 !important;
-      font-weight: 500;
-      margin-top: 4px;
-    }
-
-    // Focus state improvements
-    &.mat-focused {
-      .mat-mdc-form-field-label {
-        color: #e91e63 !important;
-      }
     }
   }
 }
 
 mat-dialog-actions {
-  padding: 20px 24px;
-  background: rgba(156, 39, 176, 0.2);
+  padding: 10px 18px;
   display: flex;
   justify-content: flex-end;
-  gap: 16px;
+  gap: 12px;
 
-  button {
-    min-width: 100px;
-    border-radius: 8px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-
-    &[mat-button] {
-      color: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(233, 30, 99, 0.3);
-
-      &:hover {
-        background: rgba(233, 30, 99, 0.1);
-        border-color: rgba(233, 30, 99, 0.6);
-        color: #ffffff;
-      }
-    }
-
-    &[mat-raised-button] {
-      background: linear-gradient(135deg, #e91e63, #9c27b0);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
-
-      &:hover {
-        background: linear-gradient(135deg, #d81b60, #8e24aa);
-        box-shadow: 0 6px 16px rgba(233, 30, 99, 0.4);
-        transform: translateY(-2px);
-      }
-
-      &:disabled {
-        background: rgba(100, 100, 100, 0.5);
-        color: rgba(255, 255, 255, 0.5);
-        box-shadow: none;
-        transform: none;
-      }
-    }
-  }
-}
-
-// Enhanced responsive design
-@media (max-width: 600px) {
-  .dialog-content {
-    min-width: 320px;
-    max-width: 95vw;
-    padding: 24px 20px;
-  }
-
-  .form {
-    gap: 16px;
-
-    .form-row {
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    mat-form-field input {
-      padding: 12px 14px;
-      font-size: 14px;
-    }
-  }
-
-  mat-dialog-actions {
-    padding: 16px 20px;
+  @media (max-width: 600px) {
     flex-direction: column-reverse;
+    padding: 8px 16px;
 
     button {
       width: 100%;
@@ -186,65 +72,5 @@ mat-dialog-actions {
         margin-top: 8px;
       }
     }
-  }
-}
-
-@media (max-width: 400px) {
-  .dialog-header {
-    padding: 0 16px;
-
-    h2 {
-      font-size: 18px;
-    }
-  }
-
-  .dialog-content {
-    min-width: 280px;
-    padding: 20px 16px;
-  }
-
-  mat-dialog-actions {
-    padding: 16px;
-  }
-}
-
-// Animation improvements
-::ng-deep .mat-mdc-dialog-container {
-  background: transparent !important;
-  box-shadow: none !important;
-
-  .mdc-dialog__surface {
-    background: rgba(30, 30, 30, 0.95) !important;
-    border: 1px solid rgba(124, 17, 52, 0.4) !important;
-    border-radius: 16px !important;
-    box-shadow:
-      0 16px 48px rgba(115, 17, 50, 0.3),
-      0 8px 24px rgba(156, 39, 176, 0.2) !important;
-    backdrop-filter: blur(20px);
-  }
-}
-
-// Focus management
-.form mat-form-field {
-  .mat-mdc-text-field-wrapper {
-    .mat-mdc-notched-outline {
-      display: none; // Hide default outline as we have custom border
-    }
-  }
-}
-
-// Error state styling
-.form mat-form-field.mat-form-field-invalid {
-  .mat-mdc-text-field-wrapper {
-    border-color: #ff5252 !important;
-    box-shadow: 0 0 0 2px rgba(255, 82, 82, 0.2) !important;
-  }
-}
-
-// Success state styling (when valid)
-.form mat-form-field.mat-form-field-valid {
-  .mat-mdc-text-field-wrapper.mdc-text-field--focused {
-    border-color: #4caf50 !important;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1) !important;
   }
 }

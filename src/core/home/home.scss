@@ -1,13 +1,13 @@
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  height: 100vh;
-  overflow: hidden;
-}
+  padding: 24px;
 
-@media (max-width: 768px) {
-  .home-container {
+  @media (max-width: 768px) {
     padding: 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px;
   }
 }
