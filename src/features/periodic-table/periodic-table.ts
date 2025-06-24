@@ -8,12 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PeriodicElementsStore } from '../../utils/store/periodic-elements.store';
 import { PeriodicElement } from '../../utils/models/periodic-element';
 import { EditElementDialog } from '../edit-element-dialog/edit-element-dialog';
-import {MatTooltip} from '@angular/material/tooltip';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-periodic-table',
@@ -36,6 +37,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 export class PeriodicTable implements OnInit, OnDestroy {
   private readonly store = inject(PeriodicElementsStore);
   private readonly dialog = inject(MatDialog);
+  private readonly snackBar = inject(MatSnackBar);
   private readonly destroy$ = new Subject<void>();
 
   readonly allElements = this.store.elements;
@@ -51,21 +53,18 @@ export class PeriodicTable implements OnInit, OnDestroy {
     // React to changes in store elements using effect
     effect(() => {
       const elements = this.allElements();
-      if (this.searchControl.value) {
-        this.filterElements(this.searchControl.value);
-      } else {
-        this.filteredElements.set(elements);
-      }
-    });
+      const searchTerm = this.searchControl.value || '';
+      this.filterElements(searchTerm);
+    }, { allowSignalWrites: true });
   }
 
   ngOnInit(): void {
     this.store.loadElements();
 
-    // Setup search with 2 second debounce
+    // Setup search with reduced debounce time for better UX
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(2000),
+        debounceTime(300), // Reduced from 2000ms to 300ms
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
@@ -101,6 +100,13 @@ export class PeriodicTable implements OnInit, OnDestroy {
   onRowClick(element: PeriodicElement): void {
     this.store.selectElement(element);
     console.log('Selected element:', element);
+
+    // Show a subtle feedback
+    this.snackBar.open(`Selected: ${element.name}`, '', {
+      duration: 1500,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
   }
 
   onEditElement(element: PeriodicElement, event: Event): void {
@@ -108,19 +114,69 @@ export class PeriodicTable implements OnInit, OnDestroy {
 
     const dialogRef = this.dialog.open(EditElementDialog, {
       width: '500px',
-      data: { element }
+      maxWidth: '90vw',
+      disableClose: false,
+      autoFocus: true,
+      data: { element: { ...element } } // Create a copy to avoid direct mutations
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.store.updateElement(result);
-        console.log('Element updated:', result);
+        // Validate that we have a valid element
+        if (this.isValidElement(result)) {
+          this.store.updateElement(result);
+          this.snackBar.open(
+            `${result.name} updated successfully!`,
+            'Close',
+            {
+              duration: 3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              panelClass: ['success-snackbar']
+            }
+          );
+          console.log('Element updated:', result);
+        } else {
+          this.snackBar.open(
+            'Invalid element data. Please check your inputs.',
+            'Close',
+            {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              panelClass: ['error-snackbar']
+            }
+          );
+        }
       }
     });
+  }
+
+  private isValidElement(element: any): element is PeriodicElement {
+    return element &&
+      typeof element.position === 'number' &&
+      typeof element.name === 'string' &&
+      typeof element.weight === 'number' &&
+      typeof element.symbol === 'string' &&
+      element.position > 0 &&
+      element.name.trim().length > 0 &&
+      element.weight > 0 &&
+      element.symbol.trim().length > 0;
   }
 
   clearSearch(): void {
     this.searchControl.setValue('');
     this.filteredElements.set(this.allElements());
+  }
+
+  // Helper method to get result count text
+  getResultsText(): string {
+    const total = this.elementsCount();
+    const filtered = this.filteredElements().length;
+
+    if (this.searchControl.value) {
+      return `Showing ${filtered} of ${total} elements`;
+    }
+    return `${total} elements`;
   }
 }
