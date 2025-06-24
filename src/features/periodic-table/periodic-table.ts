@@ -57,7 +57,7 @@ export class PeriodicTable implements OnInit, OnDestroy {
 
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(2000),
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
