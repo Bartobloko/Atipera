@@ -16,7 +16,7 @@ body {
     #ad1457 100%);
   background-attachment: fixed;
   color: #ffffff;
-  min-height: 100vh;
+  height: 100vh;
   position: relative;
 
   // Animated background overlay
@@ -176,7 +176,7 @@ body {
 }
 
 // High contrast mode
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   body {
     background: #000000;
     color: #ffffff;
