@@ -46,7 +46,7 @@
   }
 
   mat-form-field {
-    width: 300px; // Przywrócona normalna szerokość pola wyszukiwania
+    width: 320px;
     flex-shrink: 0;
 
     .mat-mdc-form-field-wrapper {
@@ -54,37 +54,85 @@
     }
 
     .mat-mdc-text-field-wrapper {
-      background: rgba(40, 40, 40, 0.8);
+      background: rgba(50, 50, 50, 0.9) !important;
       border-radius: 12px;
-      border: 2px solid rgba(233, 30, 99, 0.5);
-      transition: all 0.3s ease;
+      border: 2px solid rgba(233, 30, 99, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      backdrop-filter: blur(10px);
 
       &:hover {
-        background: rgba(50, 50, 50, 0.9);
-        border-color: rgba(233, 30, 99, 0.8);
-        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
+        background: rgba(60, 60, 60, 0.95) !important;
+        border-color: rgba(233, 30, 99, 0.6);
+        box-shadow:
+          0 4px 16px rgba(233, 30, 99, 0.2),
+          0 2px 8px rgba(156, 39, 176, 0.15);
+        transform: translateY(-1px);
       }
 
       &.mdc-text-field--focused {
-        border-color: #e91e63;
-        background: rgba(50, 50, 50, 0.9);
-        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        border-color: #e91e63 !important;
+        background: rgba(60, 60, 60, 0.95) !important;
+        box-shadow:
+          0 0 0 3px rgba(233, 30, 99, 0.15),
+          0 8px 24px rgba(233, 30, 99, 0.25);
+        transform: translateY(-2px);
       }
     }
 
     input {
-      padding: 0;
-      font-size: 14px;
+      font-size: 15px;
       color: #ffffff !important;
+      font-weight: 400;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 400;
+      }
     }
 
-    mat-icon {
-      color: #e91e63;
-      font-size: 20px;
+    .mat-mdc-form-field-icon-prefix {
+      mat-icon {
+        color: rgba(233, 30, 99, 0.8);
+        font-size: 20px;
+        margin-right: 8px;
+        transition: color 0.3s ease;
+      }
     }
 
+    .mat-mdc-form-field-icon-suffix {
+      button {
+        color: rgba(255, 255, 255, 0.6);
+        transition: all 0.3s ease;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+
+        &:hover {
+          color: #ffffff;
+          background: rgba(233, 30, 99, 0.2);
+          transform: scale(1.1);
+        }
+
+        mat-icon {
+          font-size: 18px;
+        }
+      }
+    }
+
+    &.mat-focused {
+      .mat-mdc-form-field-icon-prefix mat-icon {
+        color: #e91e63;
+      }
+    }
+
+    // Hide the default label since we're using placeholder
     .mat-mdc-form-field-label {
-      color: rgba(255, 255, 255, 0.7) !important;
+      display: none;
+    }
+
+    // Remove default outline
+    .mat-mdc-notched-outline {
+      display: none;
     }
   }
 }
