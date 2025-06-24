@@ -111,9 +111,6 @@
     background: rgba(233, 30, 99, 0.7);
     border-radius: 3px;
 
-    &:hover {
-      background: rgba(233, 30, 99, 0.9);
-    }
   }
 
   &::-webkit-scrollbar-corner {
@@ -231,7 +228,6 @@
         color: #ffffff;
         background: linear-gradient(135deg, #e91e63, #9c27b0);
         transform: scale(1.15) rotate(5deg);
-        box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
       }
 
       &:active {
