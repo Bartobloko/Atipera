@@ -45,4 +45,6 @@ src/
 ✅ Filtrowanie po wszystkich polach  
 ✅ Debounce na wyszukiwaniu  
 ✅ Angular Material  
-✅ Angular 20 + SignalStore
+✅ Angular 20 + SignalStore (występuje mismatch wersji ponieważ ngrx/signals na dzień dzisiejszy jest tylko na wersje Angular 19)
+
+
