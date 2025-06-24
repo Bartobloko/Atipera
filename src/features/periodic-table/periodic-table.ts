@@ -2,7 +2,6 @@ import { Component, OnInit, inject, OnDestroy, effect, signal } from '@angular/c
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +13,6 @@ import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { PeriodicElementsStore } from '../../utils/store/periodic-elements.store';
 import { PeriodicElement } from '../../utils/models/periodic-element';
 import { EditElementDialog } from '../edit-element-dialog/edit-element-dialog';
-import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-periodic-table',
@@ -24,12 +22,10 @@ import { MatTooltip } from '@angular/material/tooltip';
     ReactiveFormsModule,
     MatTableModule,
     MatProgressSpinnerModule,
-    MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule,
-    MatTooltip
+    MatInputModule
   ],
   templateUrl: './periodic-table.html',
   styleUrl: './periodic-table.scss'
@@ -42,7 +38,6 @@ export class PeriodicTable implements OnInit, OnDestroy {
 
   readonly allElements = this.store.elements;
   readonly loading = this.store.loading;
-  readonly elementsCount = this.store.elementsCount;
 
   searchControl = new FormControl('');
   filteredElements = signal<PeriodicElement[]>([]);
@@ -50,7 +45,6 @@ export class PeriodicTable implements OnInit, OnDestroy {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'actions'];
 
   constructor() {
-    // React to changes in store elements using effect
     effect(() => {
       const elements = this.allElements();
       const searchTerm = this.searchControl.value || '';
@@ -61,10 +55,9 @@ export class PeriodicTable implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.loadElements();
 
-    // Setup search with reduced debounce time for better UX
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(300), // Reduced from 2000ms to 300ms
+        debounceTime(300),
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
@@ -72,7 +65,6 @@ export class PeriodicTable implements OnInit, OnDestroy {
         this.filterElements(searchTerm || '');
       });
 
-    // Initialize filtered elements
     this.filteredElements.set(this.allElements());
   }
 
@@ -97,18 +89,6 @@ export class PeriodicTable implements OnInit, OnDestroy {
     this.filteredElements.set(filtered);
   }
 
-  onRowClick(element: PeriodicElement): void {
-    this.store.selectElement(element);
-    console.log('Selected element:', element);
-
-    // Show a subtle feedback
-    this.snackBar.open(`Selected: ${element.name}`, '', {
-      duration: 1500,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom'
-    });
-  }
-
   onEditElement(element: PeriodicElement, event: Event): void {
     event.stopPropagation();
 
@@ -117,37 +97,20 @@ export class PeriodicTable implements OnInit, OnDestroy {
       maxWidth: '90vw',
       disableClose: false,
       autoFocus: true,
-      data: { element: { ...element } } // Create a copy to avoid direct mutations
+      data: { element: { ...element } }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // Validate that we have a valid element
-        if (this.isValidElement(result)) {
-          this.store.updateElement(result);
-          this.snackBar.open(
-            `${result.name} updated successfully!`,
-            'Close',
-            {
-              duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-              panelClass: ['success-snackbar']
-            }
-          );
-          console.log('Element updated:', result);
-        } else {
-          this.snackBar.open(
-            'Invalid element data. Please check your inputs.',
-            'Close',
-            {
-              duration: 4000,
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-              panelClass: ['error-snackbar']
-            }
-          );
-        }
+      if (result && this.isValidElement(result)) {
+        this.store.updateElement(result);
+        this.snackBar.open(
+          `${result.name} updated successfully`,
+          'Close',
+          {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          }
+        );
       }
     });
   }
@@ -166,17 +129,5 @@ export class PeriodicTable implements OnInit, OnDestroy {
 
   clearSearch(): void {
     this.searchControl.setValue('');
-    this.filteredElements.set(this.allElements());
-  }
-
-  // Helper method to get result count text
-  getResultsText(): string {
-    const total = this.elementsCount();
-    const filtered = this.filteredElements().length;
-
-    if (this.searchControl.value) {
-      return `Showing ${filtered} of ${total} elements`;
-    }
-    return `${total} elements`;
   }
 }

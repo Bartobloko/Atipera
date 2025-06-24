@@ -1,51 +1,196 @@
-.periodic-table-card {
-  width: 100%;
-  max-width: none;
-  margin: 20px;
+.table-container {
+  background: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(142, 36, 170, 0.4);
+  overflow: hidden;
+  border: 1px solid #8e24aa;
 }
 
-.no-results {
-  color: #666;
-  font-style: italic;
-  margin-top: 10px;
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
 }
 
-table {
-  width: 100%;
-  min-width: 600px;
-}
+.header {
+  padding: 24px 32px 16px;
+  border-bottom: 1px solid #444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: #2a2a2a;
 
-.table-row {
-  transition: background-color 0.2s ease;
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+    color: #ffffff;
+  }
 
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+  .search {
+    flex: 0 0 300px;
+
+    mat-form-field {
+      width: 100%;
+
+      .mat-mdc-form-field-wrapper {
+        padding-bottom: 0;
+      }
+
+      .mat-mdc-text-field-wrapper {
+        background: #333;
+        border-radius: 6px;
+        border: 1px solid #8e24aa;
+
+        &:hover {
+          background: #3a3a3a;
+          border-color: #ab47bc;
+        }
+
+        &.mdc-text-field--focused {
+          border-color: #e91e63;
+          background: #3a3a3a;
+        }
+      }
+
+      input {
+        padding: 12px 0;
+        font-size: 14px;
+        color: #ffffff !important;
+      }
+
+      mat-icon {
+        color: #e91e63;
+        font-size: 20px;
+      }
+
+      .mat-mdc-form-field-label {
+        color: #cccccc !important;
+      }
+    }
   }
 }
 
-.mat-column-position {
-  width: 30px;
+.table-wrapper {
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    background: #1a1a1a;
+
+    th {
+      background: #2a2a2a;
+      font-weight: 600;
+      font-size: 14px;
+      color: #ffffff;
+      padding: 16px 24px;
+      border-bottom: 2px solid #8e24aa;
+
+      &:first-child {
+        width: 80px;
+        text-align: center;
+      }
+
+      &:last-child {
+        width: 80px;
+        text-align: center;
+      }
+    }
+
+    td {
+      padding: 16px 24px;
+      font-size: 14px;
+      border-bottom: 1px solid #333;
+      color: #ffffff;
+
+      &:first-child {
+        text-align: center;
+        font-weight: 600;
+        color: #e91e63;
+      }
+
+      &:last-child {
+        text-align: center;
+      }
+    }
+
+    tr:hover {
+      background: rgba(142, 36, 170, 0.15);
+    }
+
+    .symbol {
+      display: inline-block;
+      background: linear-gradient(135deg, #8e24aa, #5e35b1);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      min-width: 24px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(142, 36, 170, 0.3);
+    }
+
+    button[mat-icon-button] {
+      color: #8e24aa;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #5e35b1;
+        background: rgba(142, 36, 170, 0.1);
+        transform: scale(1.1);
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+.no-results {
   text-align: center;
+  padding: 48px 24px;
+  color: #cccccc;
+  font-style: italic;
 }
 
-.mat-column-name {
-  width: 30%;
-  min-width: 120px;
-}
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 20px 24px 16px;
 
-.mat-column-weight {
-  width: 25%;
-  min-width: 100px;
-}
+    h1 {
+      font-size: 20px;
+    }
 
-.mat-column-symbol {
-  width: 15%;
-  min-width: 80px;
-  text-align: center;
-}
+    .search {
+      flex: 1;
+    }
+  }
 
-.mat-column-actions {
-  width: 15%;
-  min-width: 80px;
-  text-align: center;
+  .table-wrapper table {
+    th, td {
+      padding: 12px 16px;
+
+      &:first-child, &:last-child {
+        padding: 12px 8px;
+      }
+    }
+
+    th {
+      font-size: 13px;
+    }
+
+    td {
+      font-size: 13px;
+    }
+  }
 }
